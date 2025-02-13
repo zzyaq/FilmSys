@@ -311,12 +311,14 @@ router.get('/api/getMovieList',function (req,res) {
     if (error){
       console.log(error);
       res.json({error_code:1,message:'获取电影列表失败'})
-    } else{
+    } else {
+      console.log(result,"--------------result");
       result = JSON.parse(JSON.stringify(result));
       if (result.length){
         result = result.filter((value)=>{
           return new Date(value.show_date+','+value.show_time)-new Date()>0;
         });
+        console.log(result,"result---");
         for(let i = 0; i < result.length; i++) {
           for(let j = i+1; j < result.length; j++) {
             if(result[i]['movie_id'] === result[j]['movie_id']){
@@ -324,6 +326,7 @@ router.get('/api/getMovieList',function (req,res) {
             }
           }
         }
+    
         res.json({success_code:200,data:result})
       } else{
         res.json({error_code:1,message:'电影列表为空'})
